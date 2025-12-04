@@ -15,6 +15,7 @@ from plots import (
     plot_pnl_curve,
     plot_probability_pnl_curve
 )
+import os
 
 
 def main():
@@ -43,6 +44,25 @@ def main():
 
     print(f"Train Samples: {len(y_train)}")
     print(f"Test Samples:  {len(y_test)}")
+
+    # -----------------------------------------------
+    # Save Train & Test datasets
+    # -----------------------------------------------
+    print("\n--- Saving train_data.csv and test_data.csv ---")
+
+    # ensure /data exists
+    if not os.path.exists("data"):
+        os.makedirs("data")
+
+    # Train dataset = first part of DF
+    train_df = df.iloc[:len(y_train)].copy()
+    train_df.to_csv("data/train_data.csv", index=True)
+    print("Saved: data/train_data.csv")
+
+    # Test dataset = last part of DF
+    test_df = df.iloc[len(y_train):].copy()
+    test_df.to_csv("data/test_data.csv", index=True)
+    print("Saved: data/test_data.csv")
 
     # ---------------------------------------------------------
     # 4. Train Models (RF & XGBoost)
